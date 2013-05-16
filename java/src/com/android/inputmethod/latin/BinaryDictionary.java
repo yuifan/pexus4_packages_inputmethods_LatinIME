@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,237 +16,219 @@
 
 package com.android.inputmethod.latin;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.channels.Channels;
-import java.util.Arrays;
-
 import android.content.Context;
-import android.util.Log;
+import android.text.TextUtils;
+import android.util.SparseArray;
+
+import com.android.inputmethod.keyboard.ProximityInfo;
+import com.android.inputmethod.latin.SuggestedWords.SuggestedWordInfo;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Implements a static, compacted, binary dictionary of standard words.
  */
-public class BinaryDictionary extends Dictionary {
+public final class BinaryDictionary extends Dictionary {
+
+    public static final String DICTIONARY_PACK_AUTHORITY =
+            "com.android.inputmethod.latin.dictionarypack";
 
     /**
-     * There is difference between what java and native code can handle.
+     * There is a difference between what java and native code can handle.
      * This value should only be used in BinaryDictionary.java
      * It is necessary to keep it at this value because some languages e.g. German have
      * really long words.
      */
-    protected static final int MAX_WORD_LENGTH = 48;
+    public static final int MAX_WORD_LENGTH = Constants.Dictionary.MAX_WORD_LENGTH;
+    public static final int MAX_WORDS = 18;
+    public static final int MAX_SPACES = 16;
 
-    private static final String TAG = "BinaryDictionary";
-    private static final int MAX_ALTERNATIVES = 16;
-    private static final int MAX_WORDS = 18;
-    private static final int MAX_BIGRAMS = 60;
+    private static final String TAG = BinaryDictionary.class.getSimpleName();
+    private static final int MAX_PREDICTIONS = 60;
+    private static final int MAX_RESULTS = Math.max(MAX_PREDICTIONS, MAX_WORDS);
 
     private static final int TYPED_LETTER_MULTIPLIER = 2;
-    private static final boolean ENABLE_MISSED_CHARACTERS = true;
 
-    private int mDicTypeId;
-    private int mNativeDict;
-    private int mDictLength;
-    private int[] mInputCodes = new int[MAX_WORD_LENGTH * MAX_ALTERNATIVES];
-    private char[] mOutputChars = new char[MAX_WORD_LENGTH * MAX_WORDS];
-    private char[] mOutputChars_bigrams = new char[MAX_WORD_LENGTH * MAX_BIGRAMS];
-    private int[] mFrequencies = new int[MAX_WORDS];
-    private int[] mFrequencies_bigrams = new int[MAX_BIGRAMS];
-    // Keep a reference to the native dict direct buffer in Java to avoid
-    // unexpected deallocation of the direct buffer.
-    private ByteBuffer mNativeDictDirectBuffer;
+    private long mNativeDict;
+    private final Locale mLocale;
+    private final int[] mInputCodePoints = new int[MAX_WORD_LENGTH];
+    // TODO: The below should be int[] mOutputCodePoints
+    private final char[] mOutputChars = new char[MAX_WORD_LENGTH * MAX_RESULTS];
+    private final int[] mSpaceIndices = new int[MAX_SPACES];
+    private final int[] mOutputScores = new int[MAX_RESULTS];
+    private final int[] mOutputTypes = new int[MAX_RESULTS];
+
+    private final boolean mUseFullEditDistance;
+
+    private final SparseArray<DicTraverseSession> mDicTraverseSessions =
+            CollectionUtils.newSparseArray();
+
+    // TODO: There should be a way to remove used DicTraverseSession objects from
+    // {@code mDicTraverseSessions}.
+    private DicTraverseSession getTraverseSession(int traverseSessionId) {
+        synchronized(mDicTraverseSessions) {
+            DicTraverseSession traverseSession = mDicTraverseSessions.get(traverseSessionId);
+            if (traverseSession == null) {
+                traverseSession = mDicTraverseSessions.get(traverseSessionId);
+                if (traverseSession == null) {
+                    traverseSession = new DicTraverseSession(mLocale, mNativeDict);
+                    mDicTraverseSessions.put(traverseSessionId, traverseSession);
+                }
+            }
+            return traverseSession;
+        }
+    }
+
+    /**
+     * Constructor for the binary dictionary. This is supposed to be called from the
+     * dictionary factory.
+     * All implementations should pass null into flagArray, except for testing purposes.
+     * @param context the context to access the environment from.
+     * @param filename the name of the file to read through native code.
+     * @param offset the offset of the dictionary data within the file.
+     * @param length the length of the binary data.
+     * @param useFullEditDistance whether to use the full edit distance in suggestions
+     * @param dictType the dictionary type, as a human-readable string
+     */
+    public BinaryDictionary(final Context context,
+            final String filename, final long offset, final long length,
+            final boolean useFullEditDistance, final Locale locale, final String dictType) {
+        super(dictType);
+        mLocale = locale;
+        mUseFullEditDistance = useFullEditDistance;
+        loadDictionary(filename, offset, length);
+    }
 
     static {
-        try {
-            System.loadLibrary("jni_latinime");
-        } catch (UnsatisfiedLinkError ule) {
-            Log.e("BinaryDictionary", "Could not load native library jni_latinime");
-        }
+        JniUtils.loadNativeLibrary();
     }
 
-    /**
-     * Create a dictionary from a raw resource file
-     * @param context application context for reading resources
-     * @param resId the resource containing the raw binary dictionary
-     */
-    public BinaryDictionary(Context context, int[] resId, int dicTypeId) {
-        if (resId != null && resId.length > 0 && resId[0] != 0) {
-            loadDictionary(context, resId);
-        }
-        mDicTypeId = dicTypeId;
-    }
+    private native long openNative(String sourceDir, long dictOffset, long dictSize,
+            int typedLetterMultiplier, int fullWordMultiplier, int maxWordLength, int maxWords,
+            int maxPredictions);
+    private native void closeNative(long dict);
+    private native int getFrequencyNative(long dict, int[] word);
+    private native boolean isValidBigramNative(long dict, int[] word1, int[] word2);
+    private native int getSuggestionsNative(long dict, long proximityInfo, long traverseSession,
+            int[] xCoordinates, int[] yCoordinates, int[] times, int[] pointerIds,
+            int[] inputCodePoints, int codesSize, int commitPoint, boolean isGesture,
+            int[] prevWordCodePointArray, boolean useFullEditDistance, char[] outputChars,
+            int[] outputScores, int[] outputIndices, int[] outputTypes);
+    private static native float calcNormalizedScoreNative(char[] before, char[] after, int score);
+    private static native int editDistanceNative(char[] before, char[] after);
 
-    /**
-     * Create a dictionary from a byte buffer. This is used for testing.
-     * @param context application context for reading resources
-     * @param byteBuffer a ByteBuffer containing the binary dictionary
-     */
-    public BinaryDictionary(Context context, ByteBuffer byteBuffer, int dicTypeId) {
-        if (byteBuffer != null) {
-            if (byteBuffer.isDirect()) {
-                mNativeDictDirectBuffer = byteBuffer;
-            } else {
-                mNativeDictDirectBuffer = ByteBuffer.allocateDirect(byteBuffer.capacity());
-                byteBuffer.rewind();
-                mNativeDictDirectBuffer.put(byteBuffer);
-            }
-            mDictLength = byteBuffer.capacity();
-            mNativeDict = openNative(mNativeDictDirectBuffer,
-                    TYPED_LETTER_MULTIPLIER, FULL_WORD_FREQ_MULTIPLIER);
-        }
-        mDicTypeId = dicTypeId;
-    }
-
-    private native int openNative(ByteBuffer bb, int typedLetterMultiplier,
-            int fullWordMultiplier);
-    private native void closeNative(int dict);
-    private native boolean isValidWordNative(int nativeData, char[] word, int wordLength);
-    private native int getSuggestionsNative(int dict, int[] inputCodes, int codesSize, 
-            char[] outputChars, int[] frequencies, int maxWordLength, int maxWords,
-            int maxAlternatives, int skipPos, int[] nextLettersFrequencies, int nextLettersSize);
-    private native int getBigramsNative(int dict, char[] prevWord, int prevWordLength,
-            int[] inputCodes, int inputCodesLength, char[] outputChars, int[] frequencies,
-            int maxWordLength, int maxBigrams, int maxAlternatives);
-
-    private final void loadDictionary(Context context, int[] resId) {
-        InputStream[] is = null;
-        try {
-            // merging separated dictionary into one if dictionary is separated
-            int total = 0;
-            is = new InputStream[resId.length];
-            for (int i = 0; i < resId.length; i++) {
-                is[i] = context.getResources().openRawResource(resId[i]);
-                total += is[i].available();
-            }
-
-            mNativeDictDirectBuffer =
-                ByteBuffer.allocateDirect(total).order(ByteOrder.nativeOrder());
-            int got = 0;
-            for (int i = 0; i < resId.length; i++) {
-                 got += Channels.newChannel(is[i]).read(mNativeDictDirectBuffer);
-            }
-            if (got != total) {
-                Log.e(TAG, "Read " + got + " bytes, expected " + total);
-            } else {
-                mNativeDict = openNative(mNativeDictDirectBuffer,
-                        TYPED_LETTER_MULTIPLIER, FULL_WORD_FREQ_MULTIPLIER);
-                mDictLength = total;
-            }
-        } catch (IOException e) {
-            Log.w(TAG, "No available memory for binary dictionary");
-        } finally {
-            try {
-                if (is != null) {
-                    for (int i = 0; i < is.length; i++) {
-                        is[i].close();
-                    }
-                }
-            } catch (IOException e) {
-                Log.w(TAG, "Failed to close input stream");
-            }
-        }
-    }
-
-
-    @Override
-    public void getBigrams(final WordComposer codes, final CharSequence previousWord,
-            final WordCallback callback, int[] nextLettersFrequencies) {
-
-        char[] chars = previousWord.toString().toCharArray();
-        Arrays.fill(mOutputChars_bigrams, (char) 0);
-        Arrays.fill(mFrequencies_bigrams, 0);
-
-        int codesSize = codes.size();
-        Arrays.fill(mInputCodes, -1);
-        int[] alternatives = codes.getCodesAt(0);
-        System.arraycopy(alternatives, 0, mInputCodes, 0,
-                Math.min(alternatives.length, MAX_ALTERNATIVES));
-
-        int count = getBigramsNative(mNativeDict, chars, chars.length, mInputCodes, codesSize,
-                mOutputChars_bigrams, mFrequencies_bigrams, MAX_WORD_LENGTH, MAX_BIGRAMS,
-                MAX_ALTERNATIVES);
-
-        for (int j = 0; j < count; j++) {
-            if (mFrequencies_bigrams[j] < 1) break;
-            int start = j * MAX_WORD_LENGTH;
-            int len = 0;
-            while (mOutputChars_bigrams[start + len] != 0) {
-                len++;
-            }
-            if (len > 0) {
-                callback.addWord(mOutputChars_bigrams, start, len, mFrequencies_bigrams[j],
-                        mDicTypeId, DataType.BIGRAM);
-            }
-        }
+    // TODO: Move native dict into session
+    private final void loadDictionary(String path, long startOffset, long length) {
+        mNativeDict = openNative(path, startOffset, length, TYPED_LETTER_MULTIPLIER,
+                FULL_WORD_SCORE_MULTIPLIER, MAX_WORD_LENGTH, MAX_WORDS, MAX_PREDICTIONS);
     }
 
     @Override
-    public void getWords(final WordComposer codes, final WordCallback callback,
-            int[] nextLettersFrequencies) {
-        final int codesSize = codes.size();
-        // Won't deal with really long words.
-        if (codesSize > MAX_WORD_LENGTH - 1) return;
-        
-        Arrays.fill(mInputCodes, -1);
-        for (int i = 0; i < codesSize; i++) {
-            int[] alternatives = codes.getCodesAt(i);
-            System.arraycopy(alternatives, 0, mInputCodes, i * MAX_ALTERNATIVES,
-                    Math.min(alternatives.length, MAX_ALTERNATIVES));
-        }
-        Arrays.fill(mOutputChars, (char) 0);
-        Arrays.fill(mFrequencies, 0);
+    public ArrayList<SuggestedWordInfo> getSuggestions(final WordComposer composer,
+            final CharSequence prevWord, final ProximityInfo proximityInfo) {
+        return getSuggestionsWithSessionId(composer, prevWord, proximityInfo, 0);
+    }
 
-        int count = getSuggestionsNative(mNativeDict, mInputCodes, codesSize,
-                mOutputChars, mFrequencies,
-                MAX_WORD_LENGTH, MAX_WORDS, MAX_ALTERNATIVES, -1,
-                nextLettersFrequencies,
-                nextLettersFrequencies != null ? nextLettersFrequencies.length : 0);
+    @Override
+    public ArrayList<SuggestedWordInfo> getSuggestionsWithSessionId(final WordComposer composer,
+            final CharSequence prevWord, final ProximityInfo proximityInfo, int sessionId) {
+        if (!isValidDictionary()) return null;
 
-        // If there aren't sufficient suggestions, search for words by allowing wild cards at
-        // the different character positions. This feature is not ready for prime-time as we need
-        // to figure out the best ranking for such words compared to proximity corrections and
-        // completions.
-        if (ENABLE_MISSED_CHARACTERS && count < 5) {
-            for (int skip = 0; skip < codesSize; skip++) {
-                int tempCount = getSuggestionsNative(mNativeDict, mInputCodes, codesSize,
-                        mOutputChars, mFrequencies,
-                        MAX_WORD_LENGTH, MAX_WORDS, MAX_ALTERNATIVES, skip,
-                        null, 0);
-                count = Math.max(count, tempCount);
-                if (tempCount > 0) break;
+        Arrays.fill(mInputCodePoints, Constants.NOT_A_CODE);
+        // TODO: toLowerCase in the native code
+        final int[] prevWordCodePointArray = (null == prevWord)
+                ? null : StringUtils.toCodePointArray(prevWord.toString());
+        final int composerSize = composer.size();
+
+        final boolean isGesture = composer.isBatchMode();
+        if (composerSize <= 1 || !isGesture) {
+            if (composerSize > MAX_WORD_LENGTH - 1) return null;
+            for (int i = 0; i < composerSize; i++) {
+                mInputCodePoints[i] = composer.getCodeAt(i);
             }
         }
 
-        for (int j = 0; j < count; j++) {
-            if (mFrequencies[j] < 1) break;
-            int start = j * MAX_WORD_LENGTH;
+        final InputPointers ips = composer.getInputPointers();
+        final int codesSize = isGesture ? ips.getPointerSize() : composerSize;
+        // proximityInfo and/or prevWordForBigrams may not be null.
+        final int tmpCount = getSuggestionsNative(mNativeDict,
+                proximityInfo.getNativeProximityInfo(), getTraverseSession(sessionId).getSession(),
+                ips.getXCoordinates(), ips.getYCoordinates(), ips.getTimes(), ips.getPointerIds(),
+                mInputCodePoints, codesSize, 0 /* commitPoint */, isGesture, prevWordCodePointArray,
+                mUseFullEditDistance, mOutputChars, mOutputScores, mSpaceIndices, mOutputTypes);
+        final int count = Math.min(tmpCount, MAX_PREDICTIONS);
+
+        final ArrayList<SuggestedWordInfo> suggestions = CollectionUtils.newArrayList();
+        for (int j = 0; j < count; ++j) {
+            if (composerSize > 0 && mOutputScores[j] < 1) break;
+            final int start = j * MAX_WORD_LENGTH;
             int len = 0;
-            while (mOutputChars[start + len] != 0) {
-                len++;
+            while (len < MAX_WORD_LENGTH && mOutputChars[start + len] != 0) {
+                ++len;
             }
             if (len > 0) {
-                callback.addWord(mOutputChars, start, len, mFrequencies[j], mDicTypeId,
-                        DataType.UNIGRAM);
+                final int score = SuggestedWordInfo.KIND_WHITELIST == mOutputTypes[j]
+                        ? SuggestedWordInfo.MAX_SCORE : mOutputScores[j];
+                suggestions.add(new SuggestedWordInfo(
+                        new String(mOutputChars, start, len), score, mOutputTypes[j], mDictType));
             }
         }
+        return suggestions;
+    }
+
+    /* package for test */ boolean isValidDictionary() {
+        return mNativeDict != 0;
+    }
+
+    public static float calcNormalizedScore(String before, String after, int score) {
+        return calcNormalizedScoreNative(before.toCharArray(), after.toCharArray(), score);
+    }
+
+    public static int editDistance(String before, String after) {
+        if (before == null || after == null) {
+            throw new IllegalArgumentException();
+        }
+        return editDistanceNative(before.toCharArray(), after.toCharArray());
     }
 
     @Override
     public boolean isValidWord(CharSequence word) {
-        if (word == null) return false;
-        char[] chars = word.toString().toCharArray();
-        return isValidWordNative(mNativeDict, chars, chars.length);
-    }
-
-    public int getSize() {
-        return mDictLength; // This value is initialized on the call to openNative()
+        return getFrequency(word) >= 0;
     }
 
     @Override
-    public synchronized void close() {
+    public int getFrequency(CharSequence word) {
+        if (word == null) return -1;
+        int[] codePoints = StringUtils.toCodePointArray(word.toString());
+        return getFrequencyNative(mNativeDict, codePoints);
+    }
+
+    // TODO: Add a batch process version (isValidBigramMultiple?) to avoid excessive numbers of jni
+    // calls when checking for changes in an entire dictionary.
+    public boolean isValidBigram(CharSequence word1, CharSequence word2) {
+        if (TextUtils.isEmpty(word1) || TextUtils.isEmpty(word2)) return false;
+        int[] chars1 = StringUtils.toCodePointArray(word1.toString());
+        int[] chars2 = StringUtils.toCodePointArray(word2.toString());
+        return isValidBigramNative(mNativeDict, chars1, chars2);
+    }
+
+    @Override
+    public void close() {
+        synchronized (mDicTraverseSessions) {
+            final int sessionsSize = mDicTraverseSessions.size();
+            for (int index = 0; index < sessionsSize; ++index) {
+                final DicTraverseSession traverseSession = mDicTraverseSessions.valueAt(index);
+                if (traverseSession != null) {
+                    traverseSession.close();
+                }
+            }
+        }
+        closeInternal();
+    }
+
+    private synchronized void closeInternal() {
         if (mNativeDict != 0) {
             closeNative(mNativeDict);
             mNativeDict = 0;
@@ -255,7 +237,10 @@ public class BinaryDictionary extends Dictionary {
 
     @Override
     protected void finalize() throws Throwable {
-        close();
-        super.finalize();
+        try {
+            closeInternal();
+        } finally {
+            super.finalize();
+        }
     }
 }

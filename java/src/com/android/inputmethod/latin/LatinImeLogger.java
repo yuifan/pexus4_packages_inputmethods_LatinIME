@@ -16,19 +16,22 @@
 
 package com.android.inputmethod.latin;
 
-import com.android.inputmethod.latin.Dictionary.DataType;
-
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.inputmethodservice.Keyboard;
-import java.util.List;
+import android.view.inputmethod.EditorInfo;
 
-public class LatinImeLogger implements SharedPreferences.OnSharedPreferenceChangeListener {
+import com.android.inputmethod.keyboard.Keyboard;
 
+public final class LatinImeLogger implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static boolean sDBG = false;
+    public static boolean sVISUALDEBUG = false;
+    public static boolean sUsabilityStudy = false;
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     }
 
-    public static void init(Context context) {
+    public static void init(LatinIME context, SharedPreferences prefs) {
     }
 
     public static void commit() {
@@ -38,19 +41,27 @@ public class LatinImeLogger implements SharedPreferences.OnSharedPreferenceChang
     }
 
     public static void logOnManualSuggestion(
-            String before, String after, int position, List<CharSequence> suggestions) {
-   }
-
-    public static void logOnAutoSuggestion(String before, String after) {
+            String before, String after, int position, SuggestedWords suggestedWords) {
     }
 
-    public static void logOnAutoSuggestionCanceled() {
+    public static void logOnAutoCorrectionForTyping(
+            String before, String after, int separatorCode) {
     }
 
-    public static void logOnDelete() {
+    public static void logOnAutoCorrectionForGeometric(String before, String after,
+            int separatorCode, InputPointers inputPointers) {
+    }
+
+    public static void logOnAutoCorrectionCancelled() {
+    }
+
+    public static void logOnDelete(int x, int y) {
     }
 
     public static void logOnInputChar() {
+    }
+
+    public static void logOnInputSeparator() {
     }
 
     public static void logOnException(String metaData, Throwable e) {
@@ -59,13 +70,18 @@ public class LatinImeLogger implements SharedPreferences.OnSharedPreferenceChang
     public static void logOnWarning(String warning) {
     }
 
+    public static void onStartInputView(EditorInfo editorInfo) {
+    }
+
     public static void onStartSuggestion(CharSequence previousWords) {
     }
 
-    public static void onAddSuggestedWord(String word, int typeId, DataType dataType) {
+    public static void onAddSuggestedWord(String word, String sourceDictionaryId) {
     }
 
     public static void onSetKeyboard(Keyboard kb) {
     }
 
+    public static void onPrintAllUsabilityStudyLogs() {
+    }
 }

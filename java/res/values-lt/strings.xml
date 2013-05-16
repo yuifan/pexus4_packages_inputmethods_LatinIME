@@ -20,121 +20,130 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="english_ime_name" msgid="7252517407088836577">"„Android“ klaviatūra"</string>
-    <string name="english_ime_settings" msgid="6661589557206947774">"„Android“ klaviatūros nustatymai"</string>
+    <string name="aosp_android_keyboard_ime_name" msgid="7877134937939182296">"„Android“ klaviatūra (AOSP)"</string>
     <string name="english_ime_input_options" msgid="3909945612939668554">"Įvesties parinktys"</string>
+    <string name="english_ime_research_log" msgid="8492602295696577851">"Tyrinėti žurnalo komandas"</string>
+    <string name="aosp_spell_checker_service_name" msgid="6985142605330377819">"„Android“ rašybos tikrinimo programa (AOSP)"</string>
+    <string name="use_contacts_for_spellchecking_option_title" msgid="5374120998125353898">"Kontaktų vardų paieška"</string>
+    <string name="use_contacts_for_spellchecking_option_summary" msgid="8754413382543307713">"Rašybos tikrinimo progr. naudoja įrašus, esančius kontaktų sąraše"</string>
     <string name="vibrate_on_keypress" msgid="5258079494276955460">"Vibruoti, kai paspaudžiami klavišai"</string>
     <string name="sound_on_keypress" msgid="6093592297198243644">"Klavišo paspaudimo garsas"</string>
     <string name="popup_on_keypress" msgid="123894815723512944">"Iššoka paspaudus klavišą"</string>
-    <string name="hit_correction" msgid="4855351009261318389">"Taisyti rašybos klaidas"</string>
-    <string name="hit_correction_summary" msgid="8761701873008070796">"Įgalinti įvesties klaidos taisymą"</string>
-    <string name="hit_correction_land" msgid="2567691684825205448">"Gulsčia įvestis"</string>
-    <string name="hit_correction_land_summary" msgid="4076803842198368328">"Įgalinti įvesties klaidos taisymą"</string>
-    <string name="auto_correction" msgid="7911639788808958255">"Žodžių pasiūlymai"</string>
-    <string name="auto_correction_summary" msgid="6881047311475758267">"Automatiškai taisyti ankstesnį žodį"</string>
-    <string name="prediction" msgid="466220283138359837">"Žodžių pasiūlymai"</string>
-    <string name="prediction_category" msgid="7027100625580696660">"Žodžių pasiūlymo nustatymai"</string>
-    <string name="prediction_summary" msgid="459788228830873110">"Įgalinti automatinį užbaigimą, kai įvedinėjamas tekstas"</string>
-    <string name="auto_complete_dialog_title" msgid="2172048590607201920">"Automatinis užbaigimas"</string>
-    <string name="prediction_landscape" msgid="4874601565593216183">"Padidinti teksto lauko dydį"</string>
-    <string name="prediction_landscape_summary" msgid="6736551095997839472">"Gulsčiame rodinyje slėpti žodžių pasiūlymus"</string>
+    <string name="general_category" msgid="1859088467017573195">"Bendra"</string>
+    <string name="correction_category" msgid="2236750915056607613">"Teksto taisymas"</string>
+    <string name="gesture_typing_category" msgid="497263612130532630">"Teksto vedimas gestais"</string>
+    <string name="misc_category" msgid="6894192814868233453">"Kitos parinktys"</string>
+    <string name="advanced_settings" msgid="362895144495591463">"Išplėstiniai nustatymai"</string>
+    <string name="advanced_settings_summary" msgid="4487980456152830271">"Parinktys ekspertams"</string>
+    <string name="include_other_imes_in_language_switch_list" msgid="4533689960308565519">"Perj. į kt. įvesties būd."</string>
+    <string name="include_other_imes_in_language_switch_list_summary" msgid="840637129103317635">"Kalbos perjungimo klavišu taip pat perjungiami įvesties būdai"</string>
+    <string name="show_language_switch_key" msgid="5915478828318774384">"Kalbos keitimo klavišas"</string>
+    <string name="show_language_switch_key_summary" msgid="7343403647474265713">"Rodyti, kai įgalintos kelios įvesties kalbos"</string>
+    <string name="key_preview_popup_dismiss_delay" msgid="6213164897443068248">"Pagr. išš. l. atsis. d."</string>
+    <string name="key_preview_popup_dismiss_no_delay" msgid="2096123151571458064">"Be delsos"</string>
+    <string name="key_preview_popup_dismiss_default_delay" msgid="2166964333903906734">"Numatytasis"</string>
+    <string name="use_contacts_dict" msgid="4435317977804180815">"Siūlyti kontaktų vardus"</string>
+    <string name="use_contacts_dict_summary" msgid="6599983334507879959">"Siūlant ir taisant naudoti vardus iš „Kontaktų“"</string>
     <string name="auto_cap" msgid="1719746674854628252">"Automatinis didžiųjų raidžių rašymas"</string>
-    <string name="auto_cap_summary" msgid="3260681697600786825">"Sakinio pradžią rašyti didžiąja raide"</string>
-    <string name="auto_punctuate" msgid="7276672334264521751">"Automatiškai dėti skyrybos ženklus"</string>
-    <string name="auto_punctuate_summary" msgid="6589441565817502132"></string>
-    <string name="quick_fixes" msgid="5353213327680897927">"Greiti pataisymai"</string>
-    <string name="quick_fixes_summary" msgid="3405028402510332373">"Taiso dažnai padarytas rašybos klaidas"</string>
-    <string name="show_suggestions" msgid="507074425254289133">"Rodyti pasiūlymus"</string>
-    <string name="show_suggestions_summary" msgid="1989672863935759654">"Įvedant tekstą pateikti siūlomus žodžius"</string>
-    <string name="auto_complete" msgid="1103196318775486023">"Automatiškai užbaigti"</string>
-    <string name="auto_complete_summary" msgid="6113149638718274624">"Tarpo klavišas ir skyrybos ženklai automatiškai įterpia paryškintą žodį"</string>
-    <string name="prefs_settings_key" msgid="4623341240804046498">"Rodyti nustatymų raktą"</string>
-    <string name="settings_key_mode_auto_name" msgid="2993460277873684680">"Automatinis"</string>
-    <string name="settings_key_mode_always_show_name" msgid="3047567041784760575">"Visada rodyti"</string>
-    <string name="settings_key_mode_always_hide_name" msgid="7833948046716923994">"Visada slėpti"</string>
-    <!-- no translation found for settings_key_modes:0 (8549888726962891527) -->
-    <!-- no translation found for settings_key_modes:1 (881280041213210923) -->
-    <!-- no translation found for settings_key_modes:2 (7317310620171067848) -->
-    <string name="bigram_suggestion" msgid="1323347224043514969">"Digramų pasiūlymai"</string>
-    <string name="bigram_suggestion_summary" msgid="4383845146070101531">"Naudoti ankstesnį žodį pasiūlymui patobulinti"</string>
-  <string-array name="prediction_modes">
-    <item msgid="4870266572388153286">"Nėra"</item>
-    <item msgid="1669461741568287396">"Paprastas"</item>
-    <item msgid="4894328801530136615">"Išplėstinis"</item>
-  </string-array>
+    <string name="auto_cap_summary" msgid="7934452761022946874">"Kiekvieno sakinio pirmą žodį rašyti iš didžiosios raidės"</string>
+    <string name="configure_dictionaries_title" msgid="4238652338556902049">"Papildomi žodynai"</string>
+    <string name="main_dictionary" msgid="4798763781818361168">"Pagrindinis žodynas"</string>
+    <string name="prefs_show_suggestions" msgid="8026799663445531637">"Rodyti taisymo pasiūlymus"</string>
+    <string name="prefs_show_suggestions_summary" msgid="1583132279498502825">"Įvedant tekstą pateikti siūlomų žodžių"</string>
+    <string name="prefs_suggestion_visibility_show_name" msgid="3219916594067551303">"Visada rodyti"</string>
+    <string name="prefs_suggestion_visibility_show_only_portrait_name" msgid="3859783767435239118">"Rodyti portreto režimu"</string>
+    <string name="prefs_suggestion_visibility_hide_name" msgid="6309143926422234673">"Visada slėpti"</string>
+    <string name="auto_correction" msgid="7630720885194996950">"Automatinis taisymas"</string>
+    <string name="auto_correction_summary" msgid="5625751551134658006">"Tarpo kl. ir skyr. ženkl. aut. išt. neteis. įv. žodž."</string>
+    <string name="auto_correction_threshold_mode_off" msgid="8470882665417944026">"Išjungta"</string>
+    <string name="auto_correction_threshold_mode_modest" msgid="8788366690620799097">"Vidutinis"</string>
+    <string name="auto_correction_threshold_mode_aggeressive" msgid="3524029103734923819">"Atkaklus"</string>
+    <string name="auto_correction_threshold_mode_very_aggeressive" msgid="3386782235540547678">"Labai agresyviai"</string>
+    <string name="bigram_prediction" msgid="1084449187723948550">"Kito žodžio pasiūlymai"</string>
+    <string name="bigram_prediction_summary" msgid="3896362682751109677">"Sudarant pasiūlymus naudoti ankstesnį žodį"</string>
+    <string name="gesture_input" msgid="826951152254563827">"Įgalinti teksto vedimą gestais"</string>
+    <string name="gesture_input_summary" msgid="9180350639305731231">"Įvesti žodį slenkant raidėmis"</string>
+    <string name="gesture_preview_trail" msgid="3802333369335722221">"Rodyti gestų kelią"</string>
+    <string name="gesture_floating_preview_text" msgid="4443240334739381053">"Dinaminė slankioji peržiūra"</string>
+    <string name="gesture_floating_preview_text_summary" msgid="4472696213996203533">"Gestikuliuojant peržiūrėti siūlomą žodį"</string>
     <string name="added_word" msgid="8993883354622484372">"<xliff:g id="WORD">%s</xliff:g>: išsaugota"</string>
-    <string name="tip_long_press" msgid="6101270866284343344">"Laikykite klavišą nuspaudę, kad pamatytumėte kirčius (ø, ö ir t. t.)"</string>
-    <string name="tip_dismiss" msgid="7585579046862204381">"Paspauskite klavišą „Atgal“ ↶, kad uždarytumėte klaviatūrą"</string>
-    <string name="tip_access_symbols" msgid="6344098517525531652">"Pasiekti skaičius ir simbolius"</string>
-    <string name="tip_add_to_dictionary" msgid="1487293888469227817">"Paspauskite ir laikykite nuspaudę kairiausią žodį, kad pridėtumėte jį prie žodyno"</string>
-    <string name="touch_to_continue" msgid="7869803257948414531">"Palieskite šią užuominą, jei norite tęsti »"</string>
-    <string name="touch_to_finish" msgid="7990196086480585789">"Paleiskite čia, kad uždarytumėte šią užuominą ir pradėtumėte įvedinėti tekstą!"</string>
-    <string name="tip_to_open_keyboard" msgid="6821200275486950452"><b>"Klaviatūra atsidarys kaskart, kai paliesite teksto lauką"</b></string>
-    <string name="tip_to_view_accents" msgid="5433158573693308501"><b>"Palieskite ir laikykite klavišą, kad pamatytumėte kirčius"\n"(ø, ö, ô, ó, and so on)"</b></string>
-    <string name="tip_to_open_symbols" msgid="7345139325622444880"><b>"Perjunkite į skaičius ir simbolius, paliesdami šį klavišą"</b></string>
-    <string name="tip_to_close_symbols" msgid="5227724217206927185"><b>"Grįžkite prie raidžių dar kartą paliesdami šį klavišą"</b></string>
-    <string name="tip_to_launch_settings" msgid="8402961128983196128"><b>"Palieskite ir laikykite šį klavišą, kad pakeistumėte klaviatūros nustatymus, pvz., automatinį užbaigimą"</b></string>
-    <string name="tip_to_start_typing" msgid="7213843601369174313"><b>"Išbandykite tai!"</b></string>
     <string name="label_go_key" msgid="1635148082137219148">"Pradėti"</string>
     <string name="label_next_key" msgid="362972844525672568">"Kitas"</string>
+    <string name="label_previous_key" msgid="1211868118071386787">"Anks."</string>
     <string name="label_done_key" msgid="2441578748772529288">"Atlikta"</string>
     <string name="label_send_key" msgid="2815056534433717444">"Siųsti"</string>
-    <string name="label_symbol_key" msgid="6175820506864489453">"?123"</string>
-    <string name="label_phone_key" msgid="4275497665515080551">"123"</string>
-    <string name="label_alpha_key" msgid="8864943487292437456">"ABC"</string>
-    <string name="label_alt_key" msgid="2846315350346694811">"ALT"</string>
-    <string name="voice_warning_title" msgid="4419354150908395008">"Balso įvestis"</string>
-    <string name="voice_warning_locale_not_supported" msgid="637923019716442333">"Šiuo metu balso įvestis jūsų kompiuteryje nepalaikoma, bet ji veikia anglų k."</string>
-    <string name="voice_warning_may_not_understand" msgid="4611518823070986445">"Balso įvestis – tai eksperimentinė funkcija, naudojanti „Google“ tinklo kalbos atpažinimą."</string>
-    <string name="voice_warning_how_to_turn_off" msgid="5652369578498701761">"Jei norite išjungti balso įvestį, eikite į klaviatūros nustatymus."</string>
-    <string name="voice_hint_dialog_message" msgid="6892342981545727994">"Jei norite naudoti balso įvestį, paspauskite mikrofono mygtuką arba pirštu slyskite ekranine klaviatūra."</string>
-    <string name="voice_listening" msgid="467518160751321844">"Kalbėkite dabar"</string>
-    <string name="voice_working" msgid="6666937792815731889">"Veikia"</string>
-    <string name="voice_initializing" msgid="661962047129906646"></string>
-    <string name="voice_error" msgid="5140896300312186162">"Klaida. Bandykite dar kartą."</string>
-    <string name="voice_network_error" msgid="6649556447401862563">"Nepavyko prijungti"</string>
-    <string name="voice_too_much_speech" msgid="5746973620134227376">"Klaida, per daug kalbos."</string>
-    <string name="voice_audio_error" msgid="5072707727016414454">"Problema su garsu"</string>
-    <string name="voice_server_error" msgid="7807129913977261644">"Serverio klaida"</string>
-    <string name="voice_speech_timeout" msgid="8461817525075498795">"Negirdima jokia kalba"</string>
-    <string name="voice_no_match" msgid="4285117547030179174">"Atitikmenų nerasta"</string>
-    <string name="voice_not_installed" msgid="5552450909753842415">"Balso paieška neįdiegta"</string>
-    <string name="voice_swipe_hint" msgid="6943546180310682021"><b>"Užuomina:"</b>" perbraukite klaviatūra, kad galėtumėte kalbėti"</string>
-    <string name="voice_punctuation_hint" msgid="1611389463237317754"><b>"Užuomina:"</b>" kitą kartą pabandykite sakyti skyrybos ženklų pavadinimus, pvz., „taškas“, „kablelis“ arba „klaustukas“."</string>
-    <string name="cancel" msgid="6830980399865683324">"Atšaukti"</string>
-    <string name="ok" msgid="7898366843681727667">"Gerai"</string>
-    <string name="voice_input" msgid="2466640768843347841">"Balso įvestis"</string>
-  <string-array name="voice_input_modes">
-    <item msgid="1349082139076086774">"Pagrindinėje klaviatūroje"</item>
-    <item msgid="8529385602829095903">"Simbolių klaviatūroje"</item>
-    <item msgid="7283103513488381103">"Išjungta"</item>
-  </string-array>
-  <string-array name="voice_input_modes_summary">
-    <item msgid="554248625705084903">"Pagrindinės klaviatūros mikrofonas"</item>
-    <item msgid="6907837061058876770">"Mikrofonas simbolių klaviatūroje"</item>
-    <item msgid="3664304608587798036">"Balso įvestis išjungta"</item>
-  </string-array>
-    <string name="auto_submit" msgid="9151008027068358518">"Automatiškai pateikti po balso"</string>
-    <string name="auto_submit_summary" msgid="4961875269610384226">"Automatiškai spausti „Įvesti“ ieškant ar einant į kitą lauką."</string>
-    <string name="open_the_keyboard" msgid="2215920976029260466"><font size="17"><b>"Atidarykite klaviatūrą"\n</b></font><font size="3">\n</font>"Palieskite bet kurį teksto lauką."</string>
-    <string name="close_the_keyboard" msgid="6251022259044940103"><font size="17"><b>"Uždarykite klaviatūrą"\n</b></font><font size="3">\n</font>"Paspauskite klavišą „Atgal“."</string>
-    <string name="touch_and_hold" msgid="6154166367273010534"><font size="17"><b>"Palieskite ir laikykite klavišą, kad pamatytumėte parinktis"\n</b></font><font size="3">\n</font>"Pasiekite skyrybos ženklus ir kirčius."</string>
-    <string name="keyboard_settings" msgid="4585753477617374032"><font size="17"><b>"Klaviatūros nustatymai"\n</b></font><font size="3">\n</font>"Palieskite ir laikykite klavišą "<b>"?123"</b>"."</string>
-    <string name="popular_domain_0" msgid="3745279225122472969">".com"</string>
-    <string name="popular_domain_1" msgid="1370572248164278467">".net"</string>
-    <string name="popular_domain_2" msgid="3036812463748402878">".org"</string>
-    <string name="popular_domain_3" msgid="8718639560809452028">".gov"</string>
-    <string name="popular_domain_4" msgid="35359437471311470">".edu"</string>
-    <string name="selectInputMethod" msgid="315076553378705821">"Pasirinkti įvesties metodą"</string>
+    <string name="label_to_alpha_key" msgid="4793983863798817523">"ABC"</string>
+    <string name="label_to_symbol_key" msgid="8516904117128967293">"?123"</string>
+    <string name="label_to_symbol_with_microphone_key" msgid="9035925553010061906">"123"</string>
+    <string name="label_pause_key" msgid="181098308428035340">"Prist."</string>
+    <string name="label_wait_key" msgid="6402152600878093134">"Lauk."</string>
+    <string name="spoken_use_headphones" msgid="896961781287283493">"Prijunkite ausines, kad išgirstumėte sakomus slaptažodžio klavišus."</string>
+    <string name="spoken_current_text_is" msgid="2485723011272583845">"Dabartinis tekstas yra %s"</string>
+    <string name="spoken_no_text_entered" msgid="7479685225597344496">"Nėra įvesto teksto"</string>
+    <string name="spoken_description_unknown" msgid="3197434010402179157">"Klavišo kodas %d"</string>
+    <string name="spoken_description_shift" msgid="244197883292549308">"Antrojo lygio klavišas"</string>
+    <string name="spoken_description_shift_shifted" msgid="1681877323344195035">"Įjungtas antrasis lygis (palieskite, kad išjungtumėte)"</string>
+    <string name="spoken_description_caps_lock" msgid="3276478269526304432">"Įjungtos didžiosios raidės (palieskite, kad išjungtumėte)"</string>
+    <string name="spoken_description_delete" msgid="8740376944276199801">"Ištrinti"</string>
+    <string name="spoken_description_to_symbol" msgid="5486340107500448969">"Simboliai"</string>
+    <string name="spoken_description_to_alpha" msgid="23129338819771807">"Raidės"</string>
+    <string name="spoken_description_to_numeric" msgid="591752092685161732">"Skaičiai"</string>
+    <string name="spoken_description_settings" msgid="4627462689603838099">"Nustatymai"</string>
+    <string name="spoken_description_tab" msgid="2667716002663482248">"Skirtukas"</string>
+    <string name="spoken_description_space" msgid="2582521050049860859">"Tarpas"</string>
+    <string name="spoken_description_mic" msgid="615536748882611950">"Įvestis balsu"</string>
+    <string name="spoken_description_smiley" msgid="2256309826200113918">"Šypsenėlė"</string>
+    <string name="spoken_description_return" msgid="8178083177238315647">"Grįžti"</string>
+    <string name="spoken_description_search" msgid="1247236163755920808">"Ieškoti"</string>
+    <string name="spoken_description_dot" msgid="40711082435231673">"Taškas"</string>
+    <string name="spoken_description_language_switch" msgid="5507091328222331316">"Keisti kalbą"</string>
+    <string name="spoken_description_action_next" msgid="8636078276664150324">"Kitas"</string>
+    <string name="spoken_description_action_previous" msgid="800872415009336208">"Ankstesnis"</string>
+    <string name="spoken_description_shiftmode_on" msgid="5700440798609574589">"Įgalintas antrasis lygis"</string>
+    <string name="spoken_description_shiftmode_locked" msgid="593175803181701830">"Įgalintos didžiosios raidės"</string>
+    <string name="spoken_description_shiftmode_off" msgid="657219998449174808">"Antrasis lygis išjungtas"</string>
+    <string name="spoken_description_mode_symbol" msgid="7183343879909747642">"Simbolių režimas"</string>
+    <string name="spoken_description_mode_alpha" msgid="3528307674390156956">"Raidžių režimas"</string>
+    <string name="spoken_description_mode_phone" msgid="6520207943132026264">"Telefono režimas"</string>
+    <string name="spoken_description_mode_phone_shift" msgid="5499629753962641227">"Telefono simbolių režimas"</string>
+    <string name="voice_input" msgid="3583258583521397548">"Įvesties balsu klavišas"</string>
+    <string name="voice_input_modes_main_keyboard" msgid="3360660341121083174">"Pagr. klaviatūroje"</string>
+    <string name="voice_input_modes_symbols_keyboard" msgid="7203213240786084067">"Simbolių klaviatūr."</string>
+    <string name="voice_input_modes_off" msgid="3745699748218082014">"Išjungta"</string>
+    <string name="voice_input_modes_summary_main_keyboard" msgid="6586544292900314339">"Mikrof. pagr. klav."</string>
+    <string name="voice_input_modes_summary_symbols_keyboard" msgid="5233725927281932391">"Mikrof. simb. klav."</string>
+    <string name="voice_input_modes_summary_off" msgid="63875609591897607">"Balso įv. neleidž."</string>
+    <string name="configure_input_method" msgid="373356270290742459">"Konfigūruoti įvesties metodus"</string>
     <string name="language_selection_title" msgid="1651299598555326750">"Įvesties kalbos"</string>
-    <string name="language_selection_summary" msgid="187110938289512256">"Pirštu slyskite tarpo klavišu, kad pakeistumėte kalbą"</string>
-    <string name="hint_add_to_dictionary" msgid="9006292060636342317">"← Kad išsaugotumėte, dar kartą palieskite"</string>
+    <string name="select_language" msgid="3693815588777926848">"Įvesties kalbos"</string>
+    <string name="hint_add_to_dictionary" msgid="573678656946085380">"Jei norite išsaugoti, palieskite dar kartą"</string>
     <string name="has_dictionary" msgid="6071847973466625007">"Žodynas galimas"</string>
     <string name="prefs_enable_log" msgid="6620424505072963557">"Įgalinti naudotojų atsiliepimus"</string>
     <string name="prefs_description_log" msgid="5827825607258246003">"Padėkite patobulinti šią įvesties metodo redagavimo programą automatiškai „Google“ siųsdami naudojimo statistiką ir strigčių ataskaitas."</string>
-    <string name="prefs_enable_recorrection" msgid="4588408906649533582">"Jei norite ištais. žodž., paliesk."</string>
-    <string name="prefs_enable_recorrection_summary" msgid="1056068922330206170">"Jei norite ištaisyti įvestus žodžius, palieskite juos"</string>
-    <string name="keyboard_layout" msgid="437433231038683666">"Klaviatūros tema"</string>
-    <string name="subtype_mode_keyboard" msgid="2242090416595003881">"klaviatūra"</string>
-    <string name="subtype_mode_voice" msgid="4394113125441627771">"Voice"</string>
+    <string name="keyboard_layout" msgid="8451164783510487501">"Klaviatūros tema"</string>
+    <string name="subtype_en_GB" msgid="88170601942311355">"Anglų k. (JK)"</string>
+    <string name="subtype_en_US" msgid="6160452336634534239">"Anglų k. (JAV)"</string>
+    <string name="subtype_with_layout_en_GB" msgid="2179097748724725906">"Angliška (JK) (<xliff:g id="LAYOUT">%s</xliff:g>)"</string>
+    <string name="subtype_with_layout_en_US" msgid="1362581347576714579">"Angliška (JAV) (<xliff:g id="LAYOUT">%s</xliff:g>)"</string>
+    <string name="subtype_no_language" msgid="141420857808801746">"Kalbos nėra"</string>
+    <string name="subtype_no_language_qwerty" msgid="2956121451616633133">"Nėra kalbos (QWERTY)"</string>
+    <string name="subtype_no_language_qwertz" msgid="1177848172397202890">"Nėra kalbos (QWERTZ)"</string>
+    <string name="subtype_no_language_azerty" msgid="8721460968141187394">"Nėra kalbos (AZERTY)"</string>
+    <string name="subtype_no_language_dvorak" msgid="3122976737669823935">"Nėra kalbos (Dvorak)"</string>
+    <string name="subtype_no_language_colemak" msgid="4205992994906097244">"Nėra kalbos (Colemak)"</string>
+    <string name="subtype_no_language_pcqwerty" msgid="8840928374394180189">"Nėra kalbos (PC)"</string>
+    <string name="custom_input_styles_title" msgid="8429952441821251512">"Pasirinkti įvesties stilių"</string>
+    <string name="add_style" msgid="6163126614514489951">"Prid. stilių"</string>
+    <string name="add" msgid="8299699805688017798">"Pridėti"</string>
+    <string name="remove" msgid="4486081658752944606">"Pašalinti"</string>
+    <string name="save" msgid="7646738597196767214">"Išsaugoti"</string>
+    <string name="subtype_locale" msgid="8576443440738143764">"Kalba"</string>
+    <string name="keyboard_layout_set" msgid="4309233698194565609">"Išdėstymas"</string>
+    <string name="custom_input_style_note_message" msgid="8826731320846363423">"Norint pradėti naudoti pasirinkiamą įvesties stilių, reikia jį įgalinti. Ar norite įgalinti jį dabar?"</string>
+    <string name="enable" msgid="5031294444630523247">"Įgalinti"</string>
+    <string name="not_now" msgid="6172462888202790482">"Ne dabar"</string>
+    <string name="custom_input_style_already_exists" msgid="8008728952215449707">"Toks pat įvesties stilius jau yra: <xliff:g id="INPUT_STYLE_NAME">%s</xliff:g>"</string>
+    <string name="prefs_usability_study_mode" msgid="1261130555134595254">"Tinkamumo tyrimo režimas"</string>
+    <string name="prefs_keypress_vibration_duration_settings" msgid="1829950405285211668">"Vibracijos paspaudus mygtuką trukmės nustatymai"</string>
+    <string name="prefs_keypress_sound_volume_settings" msgid="5875933757082305040">"Garso paspaudus mygtuką garsumo nustatymai"</string>
 </resources>
